@@ -1,0 +1,74 @@
+Template Macros
+
+In the template folder create a new file called _macros.html.
+
+2
+Show Job Macro Definition
+
+In _macros.html create a template macro, using the macro tag, called show_job. show_job should take one parameter called job. Don't forgot to end the macro.
+
+3
+Show Job Macro HTML
+
+Locate the template.html file in the root of the project. Open it and find the code labeled <!-- show_job -->. Copy the code to the body of the show_job macro in _macros.html.
+
+4
+Show Job Macro Header
+
+Still in the body of the show_job macro in _macros.html, find the <p> tag with a class of card_header_title.
+
+Add an <a> tag with the contents should be {{ job['title'] }}.
+5
+Show Job Macro Body
+
+Next find the <div> with a class of content in the show_job macro and add a <p> tag. In the <p> tag add the following:
+
+<a> tag with the contents {{ job['employer_name'] }}.
+Line break
+${{ job['salary'] }}
+Line break
+{{ job['description'] }}
+6
+Show Jobs Macro Definition
+
+In _macros.html create a template macro using the macro tag call it show_jobs. show_jobs should take one parameter called jobs. Don't forgot to end the macro.
+
+7
+Show Jobs Macro For Loop
+
+Still in _macros.html and in the body of the show_jobs macro add the following HTML:
+
+Add a <div> with two classes columns and is-multiline.
+In this <div> add a for in loop that loops through all jobs. Note: Use the {% %} template syntax, don’t forget about ending the for loop.
+8
+Show Jobs Macro For Loop Body
+
+In the body of the for loop add a <div> with two classes column and is-half.
+
+In this column <div> add a call to the show_job macro passing in an individual job from the for loop.
+9
+Import Macros
+
+In templates/layout.html, import the show_job and show_jobs macros using the following code:
+
+{% from '_macros.html' import show_job, show_jobs with context %}
+10
+Index Template
+
+Copy the HTML structure of the index.html file from templates.html. Replace the <h1> with the copied HTML structure.
+
+11
+Display All Jobs
+
+In the index.html template above the {% endblock %} add a call to the show_jobs macro passing in the argument jobs.
+
+12
+Gather All Jobs
+
+In app.py locate the jobs function.
+
+Above the render_template function, call the execute_sql function:
+
+Pass in the SQL statement: 'SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name FROM job JOIN employer ON employer.id = job.employer_id'.
+Assign the results of the call to a variable called jobs.
+In the render_template function, pass a keyword argument of jobs=jobs.

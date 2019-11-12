@@ -1,0 +1,39 @@
+Job Template
+
+We need a template to display an individual job. Create a new file called job.html in the template folder.
+
+In the file use an extends template tag to inherit layout.html.
+
+After the extends tag add a template block called content. In the block call the show_job macro passing in job. Note: Use the {{}} for the macro call.
+
+2
+Job Route Function
+
+In app.py create a function called job. In the body return a call to the render_template function passing in the newly created job.html template.
+
+3
+Job Route Decorator
+
+We only need one job from the database, so we will use the execute_sql function passing in a query with a where clause. Before we do that, we'll need a job_id for the where clause, and we are going to get this from the URL.
+
+Still in app.py, add a route decorator with the URL path /job/<job_id> to the job function.
+
+4
+Job Route Parameter
+
+To use the job_id we received from the URL, we need to pass it to the job function. Add job_id to the parameter list of the job function.
+
+Now that the job function has been created and has parameters, open _macros.html. Find <a> tag with the content: {{ job['title'] }}. Add an href with the value {{ url_for('job', job_id=job['id']) }}.
+
+5
+Job Route Data
+
+In the job function, above the call to the render_template function, call the execute_sql function and assign the results of the call to a job variable. Pass these three arguments to execute_sql:
+
+SQL Query: 'SELECT job.id, job.title, job.description, job.salary, employer.id as employer_id, employer.name as employer_name FROM job JOIN employer ON employer.id = job.employer_id WHERE job.id = ?'
+List Literal: [job_id]
+single=True, This will bring back only one result.
+6
+Job Route Pass Data
+
+The template needs access to the job data. Let's pass the newly created variable job to the render_template function. This is done using the keyword argument syntax job=job.
